@@ -7,31 +7,6 @@ library("ggplot2")
 #install.packages("viridis")  
 library("viridis") 
 args=commandArgs(trailingOnly = T)
-#args=c(12,24,24)
-
-########################################################################
-						# Building 384w plate #
-########################################################################
-# Create 384 well plate
-index_plate_matrix = matrix(data = 0,nrow = 16,ncol = 24)
-
-# Label plate with 1:24 and A:P
-index_plate_df <- expand.grid(x = LETTERS[1:16], y = 1:ncol(index_plate_matrix)) 
-
-# Plate number
-index_plate_df$plate=1
-
-# Order wells by position
-index_plate_df=index_plate_df[order(index_plate_df$x), ]
-
-# Paste together plate number, column number and row letter
-index_plate_df$well=paste0(index_plate_df$plate,index_plate_df$x,index_plate_df$y)
-
-# Store well coordinates in vector
-indexes_all=index_plate_df$well
-
-
-
 
 ########################################################################
 							# Function #
@@ -42,7 +17,7 @@ indexes_all=index_plate_df$well
 ## Rows: numerical, size of desired grid
 ## Columns: numerical, size of desired grid
 ## numOfReps: numerical, how many replicates of the same index
-
+indexes_all=as.character(read.table(paste0("Input/384well_",args[4],".txt"),header = F)$V1)
 
 hanlonDiagonal = function(indexes, rows, columns){
 	
@@ -116,5 +91,9 @@ hanlonDiagonal = function(indexes, rows, columns){
 }
 
 hanlonDiagonal(indexes=indexes_all[1:args[1]],rows=args[2],columns=args[3])
+
+
+
+
 
 
