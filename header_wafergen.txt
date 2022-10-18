@@ -1,0 +1,23 @@
+Comment:
+Field(s): 
+X = 1
+Y = 1
+Start Point
+Left: 0
+Up: 0
+X Field Gap:0/
+Y Field Gap:0/
+Pattern Size: 
+X = 72
+Y = 72
+Dot Pitch: 
+X = 542
+Y = 542
+Line Spotting:No
+Direction = Y
+Spot Pitch = 1000
+Frequency = 10
+Volume (µl/cm) = 0.100000
+Type = Volume
+Field Data: 
+[0, 0, 0]
