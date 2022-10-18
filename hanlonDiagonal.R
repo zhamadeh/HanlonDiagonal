@@ -43,6 +43,7 @@ indexes_all=index_plate_df$well
 ## Columns: numerical, size of desired grid
 ## numOfReps: numerical, how many replicates of the same index
 
+
 hanlonDiagonal = function(indexes, rows, columns){
 	
 	#Convert to numeric
@@ -51,19 +52,22 @@ hanlonDiagonal = function(indexes, rows, columns){
 	
 	# Determine ideal number of replicates to use
 	numOfReps=ceiling(as.numeric(columns)/as.numeric(args[1]))
-	indexes=indexes[1:(as.numeric(columns)/numOfReps)]
-	indexes= rep(indexes,each=numOfReps)
-	
-	if (length(indexes)!=columns){
-		columns=length(indexes)
+	if ((columns %% 2) != 0){
+		indexes=indexes[1:((as.numeric(columns)/numOfReps)+1)]
+		indexes= rep(indexes,each=numOfReps)
+		
+	} else{
+		indexes=indexes[1:(as.numeric(columns)/numOfReps)]
+		indexes= rep(indexes,each=numOfReps)
 	}
+	
 	message("Using ", length(unique(indexes))," indexes repeated ",numOfReps," times")
 	# Create empty matrix
-	mat=matrix(nrow = rows,ncol =columns,data = NA)
+	mat=matrix(nrow = rows,ncol=columns,data = NA)
 	
 	# Append indexes into matrix, row by row, shifting positions each row
 	for (row in 1:nrow(mat)){
-		mat[row,]=indexes
+		mat[row,]=indexes[1:ncol(mat)]
 		indexes  = c(indexes[length(indexes)],indexes[-(length(indexes))] )
 	}
 
@@ -93,7 +97,7 @@ hanlonDiagonal = function(indexes, rows, columns){
 	# Change format to match wafergen file format
 	out$pos <- paste0(out$x, "/", out$y)
 	out$well <- paste0(out$z,",")
-	out$vol = paste0(1000,",")
+	out$vol = paste0(2400,",")
 	out=dplyr::select(out,c(pos,well,vol))
 	
 	# Merge with empty wafergen file
@@ -106,14 +110,11 @@ hanlonDiagonal = function(indexes, rows, columns){
 	final_dataset=dplyr::select(join,c(pos,well,vol))
 	
 	# Create new filename, copy header file and append new data into file
-	filename=paste0("wafergen_",columns,"x",rows,"_",length(unique(indexes)),"_indexes_",numOfReps,"reps.txt")
+	filename=paste0("wafergen_",columns,"x",rows,"_",length(unique(indexes)),"_indexes_",numOfReps,"reps.fld")
 	file.copy(from = "Input/header_wafergen.txt",to = filename)
 	write.table(final_dataset,filename,row.names = F,col.names=F,quote = F,append = T,sep="\t")
 }
 
 hanlonDiagonal(indexes=indexes_all[1:args[1]],rows=args[2],columns=args[3])
-
-
-
 
 
