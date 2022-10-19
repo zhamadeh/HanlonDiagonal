@@ -12,4 +12,4 @@ This is a function for generating diagonal CellenONE dispensing profiles of cust
 Run `Rscript hanlonDiagonal.R [num of indexes] [num of columns] [num of rows] [index chip pattern 1/2]` on command line
 
 #### Example run
-![alt text](https://github.com/zhamadeh/HanlonDiagonal/blob/main/wafergen_24x24_24_indexes_1reps.png)
+![alt text](https://github.com/zhamadeh/HanlonDiagonal/blob/main/wafergen_24x24_24_indexes_1reps.png) 
